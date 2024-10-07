@@ -11,7 +11,7 @@ import os # 컴푸터 시스템 데이터에 접속
 
 # 시리얼 포트 설정
 # 아두이노가 받는 센서값이나 지정하여 나오는 값들(시리얼 데이터)을 Serial.print를 통해 시리얼 모니터로 열람할 수 있는데 그 데이터를 포트(연결선usb)를 통해 컴퓨터로 가져옴
-ser = serial.Serial('/dev/cu.usbmodem1101', 9600) # /dev/cu.usbmodem1101 부분은 자기가 꼽은 아두이노 포트의 위치로 변경해야 함, 9600은 데이터 전송 속도(이도 아두이노에 맞춰야함)
+ser = serial.Serial('/dev/cu.usbmodem1101', 9600) # /dev/cu.usbmodem1101 부분은 자기가 꼽은 아두이노 포트의 위치로 변경해야 함, 9600은 데이터 전송 속도(이 또한 아두이노의 전송속도에 맞춰야함)
 
 # 데이터 저장 리스트 초기화
 times = []
@@ -81,7 +81,7 @@ def animate(i, times, temperatures, humidities):
         # ,로 데이터를 나눔(스플릿) 년도[0] 월[1] 일[2] 시[3] 분[4] 초[5] 온도[6] 습도[7]
         data = line.split(',')
 
-        if len(data) == 8:
+        if len(data) == 11:
             # 나눈 데이터를 각 변수에 저장
             year = int(data[0]) # 년도는 0번 (파이썬에서는 0번 부터 시작)
             month = int(data[1])
@@ -91,8 +91,11 @@ def animate(i, times, temperatures, humidities):
             second = int(data[5])
             temperature_in = float(data[6])
             humidity_in = float(data[7])
+            temperature_ex = float(data[8])
+            humidity_ex = float(data[9])
+            cds = float(data[10])
+            # 데이터 시리얼 데이터 추가시 순차적으로 번호를 매겨주시면 됩니다.
 
-            
             # 년 월 일 시 분 초를 변수로 따로 묶어둠
             current_time = datetime(year, month, day, hour, minute, second)
 
@@ -170,7 +173,7 @@ plt.show() #그래프 보이기
 
 ser.close()
 # 그래프를 어떻게 그리냐 보다는 데이터를 어떻게 가져와서 이용하는가를 중점으로 보시면 됩니다!
-# 시리얼 통신의 구조가 핵심임다
-# 앞으로는 센서가 더 추가 되고 역으로 파이썬에서 아두이노로 데이터를 전송해야 하기 때문에 데이터의 양이 더 방대해지고 코드가 더 길어질 겁니다
-# pandas 라이브러리를 이용해 하루마다 저장한 데이터가 모이면 그게 데이터베이스(DB)가 됩니다
+# 시리얼 통신의 구조가 핵심입니다!
+# 앞으로는 센서가 더 추가 되고 역으로 파이썬에서 아두이노로 데이터를 전송해야 하기 때문에 데이터의 양이 더 방대해지고 코드가 더 길어질 겁니다.
+# pandas 라이브러리를 이용해 하루마다 저장한 데이터가 모이면 그게 데이터베이스(DB)가 됩니다.
 # 최종적으로는 그 데이터들을 서버에 전달해 외부 기기들로 서버에 접속하여 데이터를 열람하는 것이 데이터 통신의 목표입니다!
