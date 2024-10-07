@@ -1,7 +1,4 @@
 """파이썬 시리얼 통신 master 코드입니다!"""
-# 파이썬 라이브러리 => 특정 기능을 위해 만든 패키지
-# 라이브러리를 가져오는 import를 통해 라이브러리를 사용 가능
-# 기본 라이브러리를 제외한 라이브러리는 다운로드가 필요함 ex. pandas, serial(pyserial) ...
 import serial # 시리얼 통신을 위한 라이브러리, 파이썬의 시리얼 데이터(센서 값 등)을 파이썬에서 사용 가능함
 import matplotlib.pyplot as plt # 그래프를 그리기 위한 라이브러리
 import matplotlib.animation as animation # 그래프를 실시간으로 업데이트
@@ -170,11 +167,6 @@ def animate(i, times, temperatures, humidities):
 ani = animation.FuncAnimation(fig, animate, fargs=(times, temperatures, humidities), interval=1000)
 
 plt.tight_layout()
-plt.show() #그래프 보이기
+plt.show()
 
 ser.close()
-# 그래프를 어떻게 그리냐 보다는 데이터를 어떻게 가져와서 이용하는가를 중점으로 보시면 됩니다!
-# 시리얼 통신의 구조가 핵심입니다!
-# 앞으로는 센서가 더 추가 되고 역으로 파이썬에서 아두이노로 데이터를 전송해야 하기 때문에 데이터의 양이 더 방대해지고 코드가 더 길어질 겁니다.
-# pandas 라이브러리를 이용해 하루마다 저장한 데이터가 모이면 그게 데이터베이스(DB)가 됩니다.
-# 최종적으로는 그 데이터들을 서버에 전달해 외부 기기들로 서버에 접속하여 데이터를 열람하는 것이 데이터 통신의 목표입니다!
