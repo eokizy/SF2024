@@ -38,6 +38,18 @@
 * 스마트팜 온실 내 환경 자동 관리
 
 
-### last update 2024-10-7-16:07
+# 프로젝트 pdf
+
+
+* 회로도 https://drive.google.com/file/d/15h9-k6SbPHv7PeecHJDhnha8Goz3N2aD/view?usp=sharing
+
+
+* 에어로포닉스 양액 공급 구조 https://drive.google.com/file/d/1J-uSn06-u5l3iyiZx91l6OpA3D9MnOe4/view?usp=sharing
+
+
+* 장치 작동 구조 https://drive.google.com/file/d/1uGzmpdo7ikYIVFQuewZo4PH0RZXJ42Tu/view?usp=sharing
+
+
+### last update 2024-10-7-17:00
 
 
