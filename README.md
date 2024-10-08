@@ -30,6 +30,9 @@
 
 * IOT https://drive.google.com/file/d/1qsiMxtPAThCtUIMdMMzyNaC1cfR6lKUn/view?usp=sharing
 
+# LINK
+* 마리아DB on mac https://gymdev.tistory.com/92
+
 ### last update 2024-10-7-17:09
 
 
