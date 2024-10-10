@@ -1,3 +1,4 @@
+#아두이노에서 가져온 시리얼데이터(센서값)를 파이썬으로 가져오는 코드입니다.
 import serial
 import os
 import pandas
