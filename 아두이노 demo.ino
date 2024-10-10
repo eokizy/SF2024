@@ -23,6 +23,7 @@ OneWire ds(DS18B20);
 #define SC 23 //Show Case
 #define SOLENOID 24 //CO2 SOLENOID
 #define PUMP 25 //WATER(NT) PUMP
+#define FAN 26
 
 //토글 값
 int SUN_toggle_value;
@@ -39,6 +40,7 @@ int PUMP_toggle_value;
 //장치 초기 설정
 bool SUNSTATE = true;
 bool SCSTATE = true;
+bool FANSTATE = true;
 
 DHT dht_in(DHTPIN_in, DHTTYPE);
 DHT dht_ex(DHTPIN_ex, DHTTYPE);
@@ -62,6 +64,9 @@ void setup() {
 
   pinMode(SC, OUTPUT);
   digitalWrite(SC, SCSTATE);
+
+  pinMode(FAN, OUTPUT);
+  digitalWrite(FAN, FANSTATE);
 
   pinMode(SUN_toggle_pin, INPUT);
   pinMode(SC_toggle_pin, INPUT);
@@ -141,5 +146,11 @@ void loop() {
     }
   } else {
     digitalWrite(SC, LOW);
+  }
+  // 습도가 80이상일 때 팬을 켜주세요!
+  if (humi_in >= 80) {
+    digitalWrite(FAN, HIGH); //HIGH == 1 LOW == 0
+  } else {
+    digitalWrite(FAN, LOW);
   }
 }
