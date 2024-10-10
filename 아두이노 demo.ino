@@ -53,6 +53,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 RTC_DS3231 rtc;
 
 void setup() {
+  //비트레이트 변경 x
   Serial.begin(9600);
 
   lcd.init();
@@ -64,18 +65,23 @@ void setup() {
   rtc.begin();
   rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
 
+  //핀 모드 설정
+  //출력은 OUTPUT (장치)
+  //입력은 INPUT (센서, 버튼)
+
+  //장치 핀모드
   pinMode(SUN, OUTPUT);
   digitalWrite(SUN, SUNSTATE);
 
   pinMode(SC, OUTPUT);
-  digitalWrite(SC, SCSTATE);
-
   pinMode(FAN, OUTPUT);
 
+  //토글 스위치 핀모드
   pinMode(SUN_toggle_pin, INPUT);
   pinMode(SC_toggle_pin, INPUT);
   pinMode(SOLENOID_toggle_pin, INPUT);
   pinMode(PUMP_toggle_pin, INPUT);
+  pinMode(HEAT_toggle_pin, INPUT);
 }
 
 void loop() {
