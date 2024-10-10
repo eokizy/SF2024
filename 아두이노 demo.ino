@@ -143,7 +143,3 @@ void loop() {
     digitalWrite(SC, LOW);
   }
 }
-      digitalWrite(CC = LOW);
-    }
-  */
-}
