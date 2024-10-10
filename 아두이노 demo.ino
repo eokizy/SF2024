@@ -19,23 +19,29 @@ OneWire ds(DS18B20);
 #define DHTTYPE DHT22
 
 //장치 핀 번호
+//릴레이와 연결합니다.
 #define SUN 22 //LED
 #define SC 23 //Show Case
 #define SOLENOID 24 //CO2 SOLENOID
 #define PUMP 25 //WATER(NT) PUMP
 #define FAN 26
+#define HEAT 27 //Space Heater
 
 //토글 값
-int SUN_toggle_value;
+//토글 스위치 (똑닥이 스위치) 0off 1on
+int SUN_toggle_value; 
 int SC_toggle_value;
 int SOLENOID_toggle_value;
 int PUMP_toggle_value;
+int HEAT_toggle_value;
 
 //토글 핀 설정
-#define SUN_toggle_pin 30
+//토글 스위치 연결 핀 번호입니다.
+#define SUN_toggle_pin 30 
 #define SC_toggle_pin 31
 #define SOLENOID_toggle_pin 32
 #define PUMP_toggle_pin 33
+#define HEAT_toggle_pin 34
 
 //장치 초기 설정
 bool SUNSTATE = true;
@@ -91,7 +97,7 @@ void loop() {
 
   if (now.second() != previousTime.second()) {
     previousTime = now;
-
+    //python split(',')
     Serial.print(now.year(), DEC); //0 년
     Serial.print(",");
     Serial.print(now.month(), DEC); //1 월
@@ -113,7 +119,8 @@ void loop() {
     Serial.print(humi_ex); //9 외부 습도
     Serial.print(",");
     /*
-    Serial.print(analogRead(CDS));
+    일사량 센서 연결 예정
+    Serial.print(analogRead(CDS)); //일사량 umol
     Serial.print("\n");
     */
 
@@ -145,7 +152,7 @@ void loop() {
   } else {
     digitalWrite(SC, LOW);
   }
-  //환기팬 작동
+  //환기팬 작동 2024-10-10
   if (humi_in >= 80) {
     digitalWrite(FAN, HIGH); //HIGH == 1 LOW == 0
   } else {
