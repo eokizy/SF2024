@@ -19,10 +19,26 @@ OneWire ds(DS18B20);
 #define DHTTYPE DHT22
 
 //장치 핀 번호
-int SUN = 22;
+#define SUN 22 //LED
+#define SC 23 //Show Case
+#define SOLENOID 24 //CO2 SOLENOID
+#define PUMP 25 //WATER(NT) PUMP
+
+//토글 값
+int SUN_toggle_value;
+int SC_toggle_value;
+int SOLENOID_toggle_value;
+int PUMP_toggle_value;
+
+//토글 핀 설정
+#define SUN_toggle_pin 30
+#define SC_toggle_pin 31
+#define SOLENOID_toggle_pin 32
+#define PUMP_toggle_pin 33
 
 //장치 초기 설정
 bool SUNSTATE = true;
+bool SCSTATE = true;
 
 DHT dht_in(DHTPIN_in, DHTTYPE);
 DHT dht_ex(DHTPIN_ex, DHTTYPE);
@@ -43,68 +59,90 @@ void setup() {
 
   pinMode(SUN, OUTPUT);
   digitalWrite(SUN, SUNSTATE);
+
+  pinMode(SC, OUTPUT);
+  digitalWrite(SC, SCSTATE);
+
+  pinMode(SUN_toggle_pin, INPUT);
+  pinMode(SC_toggle_pin, INPUT);
+  pinMode(SOLENOID_toggle_pin, INPUT);
+  pinMode(PUMP_toggle_pin, INPUT);
 }
 
 void loop() {
+  //토글 스위치
+  SUN_toggle_value = digitalRead(SUN_toggle_pin);
+  SC_toggle_value = digitalRead(SC_toggle_pin);
+  SOLENOID_toggle_value = digitalRead(SOLENOID_toggle_pin);
+  PUMP_toggle_value = digitalRead(PUMP_toggle_pin);
+
+  //온습도 센서읽기
+  float temp_in = dht_in.readTemperature();
+  float humi_in = dht_in.readHumidity();
+  float temp_ex = dht_ex.readTemperature();
+  float humi_ex = dht_ex.readHumidity();
 
   static DateTime previousTime = rtc.now();
 
   DateTime now = rtc.now();
 
-  if (now.second() != previousTime.second()) { //1초를 주기로 동작
+  if (now.second() != previousTime.second()) {
     previousTime = now;
 
-    float temp_in = dht_in.readTemperature();
-    float humi_in = dht_in.readHumidity();
-    float temp_ex = dht_ex.readTemperature();
-    float humi_ex = dht_ex.readHumidity();
-    
-    //파이썬 시리얼 데이터
-    Serial.print(now.year(), DEC); //0번 '년'
+    Serial.print(now.year(), DEC); //0 년
     Serial.print(",");
-    //데이터 split을 콤마(,)로 구분하니까 Serial.print(",'); 를 꼭 써주세요 20204,10,7,18.5,60.0,20.5,60.0......
-    Serial.print(now.month(), DEC); //1번 '월'
+    Serial.print(now.month(), DEC); //1 월
     Serial.print(",");
-    Serial.print(now.day(), DEC); //2번 '일'
+    Serial.print(now.day(), DEC); ///2 일
     Serial.print(",");
-    Serial.print(now.hour(), DEC); //3번 '시'
+    Serial.print(now.hour(), DEC); //3 시
     Serial.print(",");
-    Serial.print(now.minute(), DEC); //4번 '분'
+    Serial.print(now.minute(), DEC); //4 분
     Serial.print(",");
-    Serial.print(now.second(), DEC); //5번 '초'
+    Serial.print(now.second(), DEC); //5 초
     Serial.print(",");
-    Serial.print(temp_in); //6번 '내부 온도'
+    Serial.print(temp_in); //6 내부 온도
     Serial.print(",");
-    Serial.print(humi_in); //7번 '내부 습도'
+    Serial.print(humi_in); //7 내부 습도
     Serial.print(",");
-    Serial.print(temp_ex); //8번 '외부 온도'
+    Serial.print(temp_ex); //8 외부 온도
     Serial.print(",");
-    Serial.print(humi_ex); //9번 외부 습도'
+    Serial.print(humi_ex); //9 외부 습도
     Serial.print(",");
-    Serial.print(analogRead(CDS)); //10번 '조도센서 값'
-    Serial.print("\n"); //줄바꿈
-    
-    //LED 토글
-    if (now.second() % 5 == 0) { //2024-10-7 5초로 설정되어있습니다.
-    SUNSTATE = !SUNSTATE;
-    digitalWrite(SUN, SUNSTATE);
+    /*
+    Serial.print(analogRead(CDS));
+    Serial.print("\n");
+    */
+
+    //LED 점멸
+    if (SUN_toggle_value == HIGH) {
+      if (now.second() % 5 == 0) {
+        SUNSTATE = !SUNSTATE; // LED 상태 변경
+        digitalWrite(SUN, SUNSTATE);
+      }
+    } else {
+      SUNSTATE = LOW;
+      digitalWrite(SUN, SUNSTATE);
     }
-    //lcd 화면 표시
-    lcd.setCursor(0, 0); //2024-10-7 내부 온습도만 출력됩니다.
+
+    //액정 표시
+    lcd.clear();
+    lcd.setCursor(0, 0);
     lcd.print(temp_in);
     lcd.setCursor(0, 1);
     lcd.print(humi_in);
-    lcd.clear();
   }
-  /* 20204-10-7 CC는 쇼케이스 냉방기의 예명으로 가코드만 작성된 형태입니다 기능X
-  if (digitalRead(switch) == HIGH) {
+  //쇼케이스 냉방기 작동
+  if (digitalRead(SC_toggle_value) == HIGH) {
     if (temp_in >= 18) {
-      digitalWrite(CC = HIGH);
-      Serial.print(1);
-      } else {
-        digitalWrite(CC = LOW);
-      }
+      digitalWrite(SC, HIGH);
     } else {
+        digitalWrite(SC, LOW);
+    }
+  } else {
+    digitalWrite(SC, LOW);
+  }
+}
       digitalWrite(CC = LOW);
     }
   */
