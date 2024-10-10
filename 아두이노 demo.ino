@@ -82,10 +82,10 @@ void loop() {
   PUMP_toggle_value = digitalRead(PUMP_toggle_pin);
 
   //온습도 센서읽기
-  float temp_in = dht_in.readTemperature();
-  float humi_in = dht_in.readHumidity();
-  float temp_ex = dht_ex.readTemperature();
-  float humi_ex = dht_ex.readHumidity();
+  float temp_in = dht_in.readTemperature(); //내부 온도 temp_in
+  float humi_in = dht_in.readHumidity(); //내부 습도 humi_in
+  float temp_ex = dht_ex.readTemperature(); //외부 온도 temp_ex
+  float humi_ex = dht_ex.readHumidity(); //외부 습도 humi_ex
 
   static DateTime previousTime = rtc.now();
 
