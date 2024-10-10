@@ -143,4 +143,3 @@ void loop() {
     digitalWrite(SC, LOW);
   }
 }
-강태령
