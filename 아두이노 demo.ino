@@ -40,7 +40,6 @@ int PUMP_toggle_value;
 //장치 초기 설정
 bool SUNSTATE = true;
 bool SCSTATE = true;
-bool FANSTATE = true;
 
 DHT dht_in(DHTPIN_in, DHTTYPE);
 DHT dht_ex(DHTPIN_ex, DHTTYPE);
@@ -66,7 +65,6 @@ void setup() {
   digitalWrite(SC, SCSTATE);
 
   pinMode(FAN, OUTPUT);
-  digitalWrite(FAN, FANSTATE);
 
   pinMode(SUN_toggle_pin, INPUT);
   pinMode(SC_toggle_pin, INPUT);
@@ -147,7 +145,7 @@ void loop() {
   } else {
     digitalWrite(SC, LOW);
   }
-  // 습도가 80이상일 때 팬을 켜주세요!
+  //환기팬 작동
   if (humi_in >= 80) {
     digitalWrite(FAN, HIGH); //HIGH == 1 LOW == 0
   } else {
