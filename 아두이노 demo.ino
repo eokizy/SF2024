@@ -7,6 +7,7 @@
 #include <DHT.h>
 #include <LiquidCrystal_I2C.h>
 #include <Wire.h>
+#include <HX711.h>
 
 //센서 핀 번호
 #define DHTPIN_in 2
@@ -17,6 +18,12 @@
 //센서 초기 설정
 OneWire ds(DS18B20);
 #define DHTTYPE DHT22
+
+#define calibration_factor -7050.0 //로드셀 스케일 값
+#define DOUT 6 //엠프 데이터 아웃 핀 넘버
+#define CLK 7 //엠프 클락 핀 넘버
+HX711 scale(DOUT, CLK); //엠프 핀 설정
+
 
 //장치 핀 번호
 //릴레이와 연결합니다.
@@ -82,6 +89,10 @@ void setup() {
   pinMode(SOLENOID_toggle_pin, INPUT);
   pinMode(PUMP_toggle_pin, INPUT);
   pinMode(HEAT_toggle_pin, INPUT);
+
+  //로드셀
+  scale.set_scale(calibration_factor); //스케일 지정
+  scale.tare(); //스케일 설정
 }
 
 void loop() {
@@ -124,6 +135,7 @@ void loop() {
     Serial.print(",");
     Serial.print(humi_ex); //9 외부 습도
     Serial.print(",");
+    Serial.print(scale.get_units(), 1); //10 로드셀 측정 값
     /*
     일사량 센서 연결 예정
     Serial.print(analogRead(CDS)); //일사량 umol
@@ -159,9 +171,11 @@ void loop() {
     digitalWrite(SC, LOW);
   }
   //환기팬 작동 2024-10-10
-  if (humi_in >= 80) {
-    digitalWrite(FAN, HIGH); //HIGH == 1 LOW == 0
-  } else {
-    digitalWrite(FAN, LOW);
+  if (humi_ex <= 80) {
+    if (humi_in >= 80) {
+      digitalWrite(FAN, HIGH); //HIGH == 1 LOW == 0
+    } else {
+      digitalWrite(FAN, LOW);
+    }
   }
 }
