@@ -94,7 +94,7 @@ def animate(i, times, temperatures, humidities):
             humidity_in = float(data[7])
             temperature_ex = float(data[8])
             humidity_ex = float(data[9])
-            cds = float(data[10])
+            body weight = float(data[10])
             # 데이터 시리얼 데이터 추가시 순차적으로 번호를 매겨주시면 됩니다.
 
             # 년 월 일 시 분 초를 변수로 따로 묶어둠
