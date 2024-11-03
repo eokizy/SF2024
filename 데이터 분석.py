@@ -63,9 +63,9 @@ def plot_growth_probability_combined(greenhouse_df, external_df, output_filename
     )
     
     axes[0].set_title('온실 환경의 파프리카 생장 확률')
-    axes[0].set_xlabel('월 (5 ~ 8월)')
+    axes[0].set_xlabel('월')
     axes[0].set_xticks([5, 6, 7, 8])
-    axes[0].set_ylabel('일 (1 ~ 31)')
+    axes[0].set_ylabel('일')
     axes[0].set_yticks(range(1, 32))
     axes[0].grid(True)
 
@@ -81,23 +81,23 @@ def plot_growth_probability_combined(greenhouse_df, external_df, output_filename
     )
 
     axes[1].set_title('외부 환경의 파프리카 생장 확률')
-    axes[1].set_xlabel('월 (5 ~ 8월)')
+    axes[1].set_xlabel('월')
     axes[1].set_xticks([5, 6, 7, 8])
-    axes[1].set_ylabel('일 (1 ~ 31)')  # y축 레이블 추가
+    axes[1].set_ylabel('일')
     axes[1].set_yticks(range(1, 32))
     axes[1].grid(True)
 
     # 각각의 컬러바 추가
     cbar_g = fig.colorbar(scatter_g, ax=axes[0], shrink=0.95)
-    cbar_g.set_label('온실 생장 확률 (-1 ~ 1)')
+    cbar_g.set_label
     
     cbar_e = fig.colorbar(scatter_e, ax=axes[1], shrink=0.95)
-    cbar_e.set_label('외부 생장 확률 (-1 ~ 1)')
+    cbar_e.set_label
 
     plt.savefig(f"{output_path}/{output_filename}", dpi=300)
     plt.show()
 
 # 두 그래프를 하나의 창에 표시
-plot_growth_probability_combined(greenhouse_df, external_df, '생장확률_온실_외부_비교.png')
+plot_growth_probability_combined(greenhouse_df, external_df, '생장확률 산점도.png')
 
-print("그래프가 저장되었습니다!")
+print("png saved.")
